@@ -16,7 +16,7 @@ Efek Menghapus drop(spawner): Program menjadi tidak bisa berhenti/berakhir denga
 
 Berikut adalah hasil tangkapan layar dari interaksi antara 1 server dan 3 client yang saling terhubung secara asinkronus menggunakan WebSocket:
 
-![Bukti Interaksi Server dan 3 Client]
+[Bukti Interaksi Server dan 3 Client]
 ![Screenshot 2026-05-16 at 22.37.00.png](img/Screenshot%202026-05-16%20at%2022.37.00.png)
 ![Screenshot 2026-05-16 at 22.38.10.png](img/Screenshot%202026-05-16%20at%2022.38.10.png)
 ![Screenshot 2026-05-16 at 22.39.03.png](img/Screenshot%202026-05-16%20at%2022.39.03.png)
@@ -33,4 +33,13 @@ Pada eksperimen ini, port komunikasi diubah dari `2000` menjadi `8080`.
 **Penjelasan:**
 Karena WebSocket adalah protokol komunikasi dua arah, perubahan port tidak bisa dilakukan di satu sisi saja. Saya harus mengubah port pada file `server.rs` (di bagian `TcpListener::bind`) agar server mendengarkan di port 8080, dan juga pada file `client.rs` (di bagian `Uri::from_static`) agar client menembak ke alamat dan port yang tepat. Kedua sisi juga dipastikan menggunakan protokol websocket yang sama, yang didefinisikan dengan skema `ws://` pada URI client.
 
+## Eksperimen 2.3: Small changes, add IP and Port
+
+Berikut adalah modifikasi di mana informasi pengirim (IP dan Port) serta nama pengguna ditampilkan pada setiap pesan yang diterima client:
+
+[Screenshot Eksperimen 2.3]
+![Screenshot 2026-05-16 at 22.45.53.png](img/Screenshot%202026-05-16%20at%2022.45.53.png)
+
+**Penjelasan Modifikasi:**
+Untuk mendapatkan hasil ini, server (`server.rs`) memformat pesan yang masuk dengan menggabungkan alamat pengirim (`addr`) dan teks asli sebelum melakukan broadcast (`bcast_tx.send(format!("{addr}: {text}"))`). Kemudian pada sisi client (`client.rs`), saya menambahkan string "Aryandana's Computer -" pada fungsi `println!` saat menerima pesan dari server, sehingga pesannya menjadi lebih informatif dan mudah diidentifikasi siapa pengirimnya.
 
