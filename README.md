@@ -26,4 +26,11 @@ Berikut adalah hasil tangkapan layar dari interaksi antara 1 server dan 3 client
 ### Penjelasan:
 Ketika pesan diketikkan pada salah satu terminal client, pesan tersebut akan dikirim ke server. Server kemudian menyebarkan (broadcast) pesan tersebut secara real-time ke seluruh client lain yang terhubung tanpa memblokir jalannya program.
 
+## Eksperimen 2.2: Modifying Port
+
+Pada eksperimen ini, port komunikasi diubah dari `2000` menjadi `8080`.
+
+**Penjelasan:**
+Karena WebSocket adalah protokol komunikasi dua arah, perubahan port tidak bisa dilakukan di satu sisi saja. Saya harus mengubah port pada file `server.rs` (di bagian `TcpListener::bind`) agar server mendengarkan di port 8080, dan juga pada file `client.rs` (di bagian `Uri::from_static`) agar client menembak ke alamat dan port yang tepat. Kedua sisi juga dipastikan menggunakan protokol websocket yang sama, yang didefinisikan dengan skema `ws://` pada URI client.
+
 
