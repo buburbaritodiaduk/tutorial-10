@@ -19,7 +19,7 @@ async fn handle_connection(
                         if msg.is_text() {
                             let text = msg.as_text().unwrap();
                             println!("From client {addr:?} {text:?}");
-                            let _ = bcast_tx.send(format!("{addr}: {text}"));
+                            let _ = bcast_tx.send(text.to_string());
                         }
                     }
                     Some(Err(e)) => return Err(e.into()),

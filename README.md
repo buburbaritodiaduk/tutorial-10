@@ -43,3 +43,17 @@ Berikut adalah modifikasi di mana informasi pengirim (IP dan Port) serta nama pe
 **Penjelasan Modifikasi:**
 Untuk mendapatkan hasil ini, server (`server.rs`) memformat pesan yang masuk dengan menggabungkan alamat pengirim (`addr`) dan teks asli sebelum melakukan broadcast (`bcast_tx.send(format!("{addr}: {text}"))`). Kemudian pada sisi client (`client.rs`), saya menambahkan string "Aryandana's Computer -" pada fungsi `println!` saat menerima pesan dari server, sehingga pesannya menjadi lebih informatif dan mudah diidentifikasi siapa pengirimnya.
 
+## Tutorial 3: WebChat using Yew
+
+### Eksperimen 3.1: Original Code
+Berikut adalah hasil menjalankan aplikasi WebChat (Yew framework) di browser. Aplikasi berhasil dijalankan dan terkoneksi ke websocket server Rust dari tutorial sebelumnya:
+
+
+![Screenshot 2026-05-17 at 13.13.55.png](img/Screenshot%202026-05-17%20at%2013.13.55.png)
+![Screenshot 2026-05-17 at 13.14.20.png](img/Screenshot%202026-05-17%20at%2013.14.20.png)
+
+**Penjelasan:**
+Awalnya terjadi beberapa kendala kompabilitas library (versi wasm-bindgen usang dan error parser Webpack 5), serta branch repository default yang kosong. Setelah memperbarui `wasm-bindgen`, mengubah konfigurasi `webpack`, dan menggunakan branch `websockets-part2`, frontend sukses di-compile menjadi WebAssembly.
+
+Aplikasi frontend berhasil terkoneksi ke Server WebSocket Rust yang berjalan di port 8080 dan sukses mengirimkan format JSON murni. Namun, pesan chat tidak otomatis dirender ke layar karena YewChat secara spesifik mengharapkan server untuk mengelola status "Users" dan mengirimkan balik daftar user aktif (`messageType: "users"`), sementara server Rust kita saat ini hanya berfungsi sebagai simple echo-broadcaster tanpa pengelolaan status state pengguna.
+

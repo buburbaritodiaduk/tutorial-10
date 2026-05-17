@@ -3,4 +3,7 @@ members = [
     "timer",
     "broadcast-chat"
 ]
+exclude = [
+    "YewChat"
+]
 resolver = "2"
