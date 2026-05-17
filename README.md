@@ -66,3 +66,14 @@ Berikut adalah hasil modifikasi UI pada aplikasi YewChat:
 **Penjelasan:**
 Pada tahap ini, saya menambahkan sentuhan kreativitas dengan memodifikasi komponen UI yang ada di dalam framework Yew. Saya mengubah file `login.rs` dan `chat.rs` pada direktori komponen untuk menyesuaikan warna tombol menggunakan class Tailwind CSS (contohnya mengubah dari warna indigo menjadi red/emerald) dan memodifikasi teks header agar terlihat lebih personal. Proses kompilasi WebAssembly otomatis menyesuaikan perubahan UI tersebut ke dalam browser.
 
+## Bonus: Change the websocket server!
+
+**How I did it:**
+Saya memodifikasi server WebSocket Rust dari Tutorial 2 agar tidak lagi memanipulasi pesan teks yang masuk. Sebelumnya, server Rust menambahkan format IP Address (`{addr}: {text}`) ke setiap pesan. Saya mengubahnya agar server hanya menjadi *relay* murni yang menerima pesan `text` dan melemparnya kembali (`bcast_tx.send(text.to_string())`) tanpa tambahan apa pun.
+
+**Why it is a successful change:**
+Perubahan ini sukses karena pada dasarnya protokol WebSocket hanya mentransmisikan *raw text frames*. Aplikasi YewChat mem-parsing data menggunakan format JSON yang ketat (strong JSON format). Ketika JSON di-serialize menjadi teks dan dikirim ke server, server Rust tidak perlu melakukan deserialisasi untuk mengerti isinya. Selama server Rust me-lempar (*broadcast*) teks tersebut persis seperti aslinya tanpa merusak formatnya (seperti menempelkan IP address di depannya), klien YewChat penerima dapat men-deserialize teks tersebut kembali menjadi objek/struct JSON dengan sukses.
+
+**My Opinion: Javascript vs Rust Server:**
+Menurut saya, untuk kasus chat sederhana berbasis JSON, **versi Javascript (Node.js) lebih disukai dan mudah dikembangkan**. JSON (JavaScript Object Notation) adalah format *native* dari JavaScript, sehingga kita bisa memodifikasi, menambah data, atau mengatur state (seperti daftar *Users*) secara dinamis tanpa perlu mendefinisikan *struct* yang kaku.
+Namun, jika aplikasinya berskala besar dan membutuhkan penanganan konkurensi (ribuan koneksi websocket secara bersamaan), **versi Rust lebih unggul**. Walaupun di Rust kita harus menggunakan *library* tambahan (seperti `serde_json`) untuk deserialize pesan ke dalam *struct* yang ketat, Rust memberikan keamanan memori (memory safety) dan performa *broadcasting* yang jauh lebih cepat dan stabil dibandingkan NodeJS.
