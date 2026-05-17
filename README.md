@@ -57,3 +57,12 @@ Awalnya terjadi beberapa kendala kompabilitas library (versi wasm-bindgen usang 
 
 Aplikasi frontend berhasil terkoneksi ke Server WebSocket Rust yang berjalan di port 8080 dan sukses mengirimkan format JSON murni. Namun, pesan chat tidak otomatis dirender ke layar karena YewChat secara spesifik mengharapkan server untuk mengelola status "Users" dan mengirimkan balik daftar user aktif (`messageType: "users"`), sementara server Rust kita saat ini hanya berfungsi sebagai simple echo-broadcaster tanpa pengelolaan status state pengguna.
 
+### Eksperimen 3.2: Add some creativities to the webclient
+Berikut adalah hasil modifikasi UI pada aplikasi YewChat:
+
+![Screenshot 2026-05-17 at 13.24.46.png](img/Screenshot%202026-05-17%20at%2013.24.46.png)
+![Screenshot 2026-05-17 at 13.25.08.png](img/Screenshot%202026-05-17%20at%2013.25.08.png)
+
+**Penjelasan:**
+Pada tahap ini, saya menambahkan sentuhan kreativitas dengan memodifikasi komponen UI yang ada di dalam framework Yew. Saya mengubah file `login.rs` dan `chat.rs` pada direktori komponen untuk menyesuaikan warna tombol menggunakan class Tailwind CSS (contohnya mengubah dari warna indigo menjadi red/emerald) dan memodifikasi teks header agar terlihat lebih personal. Proses kompilasi WebAssembly otomatis menyesuaikan perubahan UI tersebut ke dalam browser.
+
